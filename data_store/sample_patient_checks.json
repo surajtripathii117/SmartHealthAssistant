@@ -1,0 +1,47 @@
+[
+  {
+    "model": "assistant.symptomcheck",
+    "pk": 1,
+    "fields": {
+      "symptoms": "Fever, Cough, Body ache, Fatigue",
+      "result": "Flu (Influenza) (Match Score: 57.1%)",
+      "created_at": "2026-10-01T10:15:00Z"
+    }
+  },
+  {
+    "model": "assistant.symptomcheck",
+    "pk": 2,
+    "fields": {
+      "symptoms": "Runny nose, Sneezing, Sore throat",
+      "result": "Common Cold (Match Score: 50.0%)",
+      "created_at": "2026-10-02T14:30:00Z"
+    }
+  },
+  {
+    "model": "assistant.symptomcheck",
+    "pk": 3,
+    "fields": {
+      "symptoms": "Headache, Nausea, Dizziness",
+      "result": "Migraine (Match Score: 50.0%)",
+      "created_at": "2026-10-03T09:00:00Z"
+    }
+  },
+  {
+    "model": "assistant.symptomcheck",
+    "pk": 4,
+    "fields": {
+      "symptoms": "Severe chest pain, Difficulty breathing",
+      "result": "EMERGENCY ALERT: Severe chest pain, Difficulty breathing",
+      "created_at": "2026-10-04T18:45:00Z"
+    }
+  },
+  {
+    "model": "assistant.symptomcheck",
+    "pk": 5,
+    "fields": {
+      "symptoms": "Diarrhea, Stomach pain, Nausea, Vomiting",
+      "result": "Food Poisoning (Match Score: 57.1%)",
+      "created_at": "2026-10-05T08:20:00Z"
+    }
+  }
+]

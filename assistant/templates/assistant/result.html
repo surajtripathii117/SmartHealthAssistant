@@ -1,0 +1,258 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block title %}Analysis Results - SmartHealth Assistant{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header Breadcrumb / Title -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{% url 'assistant:index' %}" class="text-decoration-none">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'assistant:index' %}#checker-section" class="text-decoration-none">Symptom Checker</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Analysis Results</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold text-navy mb-0">
+                <i class="bi bi-file-earmark-medical text-primary me-2"></i> Analysis Results
+            </h2>
+        </div>
+        <div class="mt-3 mt-md-0 d-flex gap-2">
+            <a href="{% url 'assistant:index' %}#checker-section" class="btn btn-outline-primary rounded-pill px-3">
+                <i class="bi bi-arrow-repeat me-1"></i> New Check
+            </a>
+            <a href="{% url 'assistant:history' %}" class="btn btn-outline-secondary rounded-pill px-3">
+                <i class="bi bi-clock-history me-1"></i> View History
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary of Input Symptoms -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <div class="row align-items-center">
+            <div class="col-md-3">
+                <h6 class="text-uppercase text-muted fw-bold small mb-1">Symptoms Evaluated:</h6>
+                <span class="badge bg-secondary rounded-pill">{{ analysis.total_user_symptoms }} symptom(s) registered</span>
+            </div>
+            <div class="col-md-9 mt-2 mt-md-0">
+                <div class="d-flex flex-wrap gap-2">
+                    {% for sym in analysis.input_symptoms %}
+                        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fs-6 fw-normal">
+                            <i class="bi bi-tag-fill text-primary me-1"></i> {{ sym }}
+                        </span>
+                    {% empty %}
+                        <span class="text-muted">None recorded</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if is_historical and recorded_at %}
+            <div class="mt-3 pt-3 border-top small text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Historical check conducted on: <strong>{{ recorded_at|date:"F d, Y - H:i" }}</strong>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- EMERGENCY ALERT BANNER (If Emergency Detected) -->
+    {% if analysis.is_emergency %}
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-5 emergency-alert-card animate-pulse">
+            <div class="card-header bg-danger text-white py-3 px-4 d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill fs-2 me-3"></i>
+                <div>
+                    <h3 class="h4 mb-0 fw-bold">{{ analysis.emergency_title }}</h3>
+                    <small class="text-white-50">High-Priority Clinical Warning</small>
+                </div>
+            </div>
+            <div class="card-body p-4 p-md-5 bg-danger-subtle">
+                <div class="mb-4">
+                    <p class="fs-5 fw-semibold text-danger mb-2">
+                        {{ analysis.emergency_message }}
+                    </p>
+                    <p class="text-dark small mb-0">
+                        Our rule-based safety mechanism detected critical red-flag symptoms. In accordance with clinical safety protocols, 
+                        <strong>we do not attempt to provide non-emergency assessments for potentially life-threatening indications.</strong>
+                    </p>
+                </div>
+
+                <div class="card border-danger border-opacity-50 rounded-3 p-3 bg-white mb-4">
+                    <h6 class="fw-bold text-danger mb-2">Critical Symptoms Detected:</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for es in analysis.emergency_symptoms %}
+                            <span class="badge bg-danger text-white px-3 py-2 rounded-pill fs-6">
+                                <i class="bi bi-shield-slash-fill me-1"></i> {{ es }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3 p-4 border border-danger border-opacity-25 shadow-sm">
+                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-telephone-plus-fill text-danger me-2"></i> Recommended Immediate Actions:</h6>
+                    <ul class="mb-0 text-dark small ps-3">
+                        <li class="mb-2"><strong>Call Emergency Services Immediately:</strong> Dial your local emergency number (e.g. 911, 112, 108, or 999).</li>
+                        <li class="mb-2"><strong>Do Not Drive Yourself:</strong> Have someone drive you to the nearest emergency department or wait for the ambulance.</li>
+                        <li class="mb-2"><strong>Stay Calm and Seated:</strong> Avoid sudden exertion, maintain open airways, and remain in a comfortable seated or resting position.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- STANDARD RULE-BASED MATCH RESULTS -->
+        {% if analysis.results %}
+            <div class="mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="fw-bold text-navy mb-0">
+                        Possible Matching Conditions ({{ analysis.results|length }})
+                    </h4>
+                    <span class="badge bg-info-subtle text-info-emphasis px-3 py-2 rounded-pill small">
+                        Ranked by Symptom Match Score
+                    </span>
+                </div>
+                <p class="text-muted small">
+                    The percentage indicates a <strong>Symptom Match Score</strong> based on the overlap between your selected symptoms and the condition's typical symptom profile. It does NOT represent a medical diagnosis or disease probability.
+                </p>
+            </div>
+
+            <div class="row g-4 mb-5">
+                {% for match in analysis.results %}
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden condition-result-card">
+                            <div class="card-header bg-white border-bottom p-4 d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div>
+                                    <span class="text-muted text-uppercase fw-bold small">Possible Condition</span>
+                                    <h3 class="h4 fw-bold text-navy mb-0 mt-1">{{ match.condition }}</h3>
+                                </div>
+                                <div class="text-end">
+                                    <span class="d-block text-muted text-uppercase fw-bold small">Symptom Match Score</span>
+                                    <div class="d-flex align-items-center justify-content-end gap-2">
+                                        <div class="progress flex-grow-1 score-progress d-none d-sm-block" style="width: 140px; height: 10px;">
+                                            <div class="progress-bar {% if match.match_score >= 70 %}bg-success{% elif match.match_score >= 40 %}bg-primary{% else %}bg-warning{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ match.match_score }}%" 
+                                                 aria-valuenow="{{ match.match_score }}" 
+                                                 aria-valuemin="0" 
+                                                 aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                        <span class="badge {% if match.match_score >= 70 %}bg-success{% elif match.match_score >= 40 %}bg-primary{% else %}bg-warning{% endif %} fs-5 px-3 py-2 rounded-pill">
+                                            {{ match.match_score }}%
+                                        </span>
+                                    </div>
+                                    <small class="text-muted">({{ match.match_count }} of {{ match.total_condition_symptoms }} symptoms matched)</small>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <!-- Matching Symptoms Section -->
+                                <div class="mb-4">
+                                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">
+                                        <i class="bi bi-check2-all text-success me-1"></i> Matching Symptoms:
+                                    </h6>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        {% for ms in match.matching_symptoms %}
+                                            <span class="badge bg-success-subtle text-success-emphasis border border-success border-opacity-25 px-3 py-2 rounded-pill fs-6 fw-medium">
+                                                ✓ {{ ms }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- General Information -->
+                                <div class="mb-4">
+                                    <h6 class="fw-bold text-secondary text-uppercase small mb-2">
+                                        <i class="bi bi-info-circle text-primary me-1"></i> General Information:
+                                    </h6>
+                                    <p class="text-dark mb-0 leading-relaxed">
+                                        {{ match.description }}
+                                    </p>
+                                </div>
+
+                                <div class="row g-4">
+                                    <!-- Recommended Precautions -->
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-3 h-100 border">
+                                            <h6 class="fw-bold text-dark mb-3">
+                                                <i class="bi bi-shield-check text-primary me-2"></i> Recommended Precautions:
+                                            </h6>
+                                            <ul class="ps-3 mb-0 small text-secondary">
+                                                {% for precaution in match.precautions %}
+                                                    <li class="mb-2">{{ precaution }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!-- Next Steps -->
+                                    <div class="col-md-6">
+                                        <div class="p-3 bg-light rounded-3 h-100 border">
+                                            <h6 class="fw-bold text-dark mb-3">
+                                                <i class="bi bi-arrow-right-circle text-success me-2"></i> Suggested Next Steps:
+                                            </h6>
+                                            <ul class="ps-3 mb-0 small text-secondary">
+                                                {% for step in match.next_steps %}
+                                                    <li class="mb-2">{{ step }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- No Matches Found -->
+            <div class="card border-0 shadow-sm rounded-4 p-5 text-center my-4 bg-white">
+                <div class="avatar-icon bg-secondary-subtle text-secondary p-4 rounded-circle mx-auto mb-3" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+                    <i class="bi bi-search fs-1"></i>
+                </div>
+                <h4 class="fw-bold text-navy">No Direct Matching Condition Found</h4>
+                <p class="text-muted max-w-600 mx-auto mb-4">
+                    The symptoms you provided did not match any of the standard condition profiles currently present in our academic knowledge base.
+                </p>
+                <div class="p-3 bg-light rounded-3 max-w-600 mx-auto text-start small border mb-4">
+                    <h6 class="fw-bold text-dark mb-2"><i class="bi bi-lightbulb text-warning me-1"></i> Recommended Guidance:</h6>
+                    <ul class="mb-0 text-secondary ps-3">
+                        <li class="mb-1">Ensure symptoms were entered clearly using common terms.</li>
+                        <li class="mb-1">Select multiple symptoms to increase rule-based inference accuracy.</li>
+                        <li>Consult a licensed healthcare professional for comprehensive clinical evaluation.</li>
+                    </ul>
+                </div>
+                <div>
+                    <a href="{% url 'assistant:index' %}#checker-section" class="btn btn-primary-custom rounded-pill px-4">
+                        <i class="bi bi-arrow-left me-1"></i> Try Another Search
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <!-- Mandatory Medical Disclaimer Card -->
+    <div class="card border-0 rounded-4 p-4 shadow-sm disclaimer-card mb-5">
+        <div class="d-flex align-items-start">
+            <div class="disclaimer-icon text-warning me-3 fs-3 flex-shrink-0">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold text-dark mb-2">Important Medical Disclaimer</h5>
+                <p class="mb-0 text-secondary leading-relaxed">
+                    This result is for educational and informational purposes only. It is not a medical diagnosis. 
+                    Please consult a qualified healthcare professional for proper evaluation, diagnostic tests, and tailored clinical treatment.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center pt-2">
+        <a href="{% url 'assistant:index' %}#checker-section" class="btn btn-primary-custom btn-lg rounded-pill px-5 shadow-sm me-2">
+            <i class="bi bi-clipboard2-plus me-1"></i> Check Other Symptoms
+        </a>
+        <a href="{% url 'assistant:history' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-4">
+            <i class="bi bi-clock-history me-1"></i> View Check History
+        </a>
+    </div>
+</div>
+{% endblock %}

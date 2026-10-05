@@ -1,0 +1,321 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block title %}SmartHealth Assistant - Preliminary Health Information{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 position-relative overflow-hidden">
+    <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7 text-center text-lg-start">
+                <div class="d-inline-flex align-items-center badge bg-primary-subtle text-primary-emphasis px-3 py-2 rounded-pill mb-3 fw-semibold">
+                    <i class="bi bi-shield-check me-2"></i> Preliminary Health Knowledge System
+                </div>
+                <h1 class="display-4 fw-extrabold text-navy mb-3">
+                    Understand Your Symptoms Better
+                </h1>
+                <p class="lead text-muted mb-4">
+                    Enter your symptoms and receive general health information and possible conditions. 
+                    Your intelligent companion for preliminary, rule-based health guidance.
+                </p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                    <a href="#checker-section" class="btn btn-primary-custom btn-lg px-4 py-3 rounded-pill shadow-sm fw-semibold">
+                        <i class="bi bi-clipboard2-pulse me-2"></i> Check Symptoms
+                    </a>
+                    <a href="{% url 'assistant:about' %}" class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-pill fw-semibold">
+                        <i class="bi bi-info-circle me-2"></i> How It Works
+                    </a>
+                </div>
+
+                <div class="row g-3 mt-4 pt-2 text-start">
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-lightning-charge-fill text-warning fs-3 me-2"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Instant Analysis</h6>
+                                <small class="text-muted">Rule-based scoring</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-shield-exclamation text-danger fs-3 me-2"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Emergency Alert</h6>
+                                <small class="text-muted">Critical symptom flags</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-journal-medical text-primary fs-3 me-2"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Actionable Advice</h6>
+                                <small class="text-muted">Precautions & steps</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="hero-card card border-0 shadow-lg rounded-4 p-4 bg-white position-relative">
+                    <div class="hero-badge position-absolute top-0 end-0 translate-middle-y me-4 bg-primary text-white px-3 py-1 rounded-pill small fw-bold shadow-sm">
+                        <i class="bi bi-stars me-1"></i> Smart Assistant
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-icon bg-primary-subtle text-primary p-3 rounded-circle me-3">
+                            <i class="bi bi-hospital fs-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0 fw-bold">SmartHealth Assistant</h5>
+                            <small class="text-muted">MCA Academic Project</small>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-3">
+                        Select or type multiple symptoms to instantly calculate symptom match scores across our comprehensive condition knowledge base.
+                    </p>
+                    <div class="p-3 bg-light rounded-3 mb-3 border">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-semibold text-secondary">Knowledge Base Coverage:</span>
+                            <span class="badge bg-success-subtle text-success">8 Conditions</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-semibold text-secondary">Emergency Symptoms Detector:</span>
+                            <span class="badge bg-danger-subtle text-danger">Active</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small fw-semibold text-secondary">Database Persistence:</span>
+                            <span class="badge bg-info-subtle text-info">SQLite</span>
+                        </div>
+                    </div>
+                    <a href="#checker-section" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">
+                        Get Started Now <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Symptom Checker Section -->
+<section id="checker-section" class="py-5 bg-white border-top border-bottom">
+    <div class="container py-lg-3">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
+                <i class="bi bi-stethoscope me-1"></i> Step-by-Step Analysis
+            </span>
+            <h2 class="fw-bold text-navy">Check Your Symptoms</h2>
+            <p class="text-muted">
+                Select your symptoms from the common list below, or type additional symptoms directly into the search bar. You can choose multiple symptoms for a thorough match.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-light-card">
+                    <form method="POST" action="{% url 'assistant:checker' %}" id="symptomForm" novalidate>
+                        {% csrf_token %}
+
+                        <!-- Method 1: Text Input -->
+                        <div class="mb-4">
+                            <label for="custom_symptoms_input" class="form-label fw-bold d-flex align-items-center justify-content-between">
+                                <span><i class="bi bi-pencil-square text-primary me-2"></i> Method 1: Type Symptoms</span>
+                                <span class="badge bg-secondary-subtle text-secondary small">Comma-separated</span>
+                            </label>
+                            <div class="input-group input-group-lg shadow-sm">
+                                <span class="input-group-text bg-white border-end-0 text-muted">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" 
+                                       name="custom_symptoms" 
+                                       id="custom_symptoms_input" 
+                                       class="form-control border-start-0" 
+                                       placeholder="e.g., Fever, Cough, Headache, Sore throat"
+                                       value="{{ request.POST.custom_symptoms|default:'' }}">
+                            </div>
+                            <div class="form-text mt-2 text-muted">
+                                <i class="bi bi-info-circle me-1"></i> You can type any symptom or combine this text input with the checkboxes below.
+                            </div>
+                        </div>
+
+                        <div class="position-relative my-4 text-center">
+                            <hr class="border-secondary opacity-25">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-light-card px-3 text-muted small fw-semibold text-uppercase">
+                                OR SELECT FROM COMMON SYMPTOMS
+                            </span>
+                        </div>
+
+                        <!-- Method 2: Checkboxes -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <label class="form-label fw-bold mb-0">
+                                    <i class="bi bi-check2-square text-primary me-2"></i> Method 2: Selectable Symptom Checkboxes
+                                </label>
+                                <div>
+                                    <span class="badge bg-primary rounded-pill px-3 py-2" id="selectedCountBadge">
+                                        0 symptoms selected
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row g-3" id="symptomsGrid">
+                                {% for sym in symptoms_list %}
+                                    <div class="col-6 col-md-4 col-lg-3">
+                                        <div class="symptom-checkbox-card p-3 rounded-3 border bg-white h-100 transition-all">
+                                            <div class="form-check d-flex align-items-center m-0">
+                                                <input class="form-check-input symptom-checkbox me-2 flex-shrink-0" 
+                                                       type="checkbox" 
+                                                       name="selected_symptoms" 
+                                                       value="{{ sym }}" 
+                                                       id="sym_{{ forloop.counter }}">
+                                                <label class="form-check-label w-100 cursor-pointer text-dark fw-medium small" for="sym_{{ forloop.counter }}">
+                                                    {{ sym }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Notice on Emergency Symptoms -->
+                        <div class="alert alert-danger-subtle border-danger border-opacity-25 rounded-3 d-flex align-items-start mb-4 p-3">
+                            <i class="bi bi-exclamation-octagon-fill text-danger fs-4 me-3 mt-1"></i>
+                            <div>
+                                <h6 class="alert-heading fw-bold text-danger mb-1">Emergency Warning</h6>
+                                <p class="small text-danger-emphasis mb-0">
+                                    If you are experiencing severe symptoms such as <strong>severe chest pain, difficulty breathing, severe bleeding, or loss of consciousness</strong>, do not wait for this tool. Seek emergency medical care immediately!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
+                            <button type="button" class="btn btn-outline-danger px-4 rounded-pill order-2 order-sm-1" id="clearSymptomsBtn">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i> Clear Selection
+                            </button>
+                            
+                            <button type="submit" class="btn btn-primary-custom btn-lg px-5 rounded-pill shadow-sm fw-semibold order-1 order-sm-2" id="analyzeBtn">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="analyzeSpinner" role="status" aria-hidden="true"></span>
+                                <i class="bi bi-cpu me-1" id="analyzeIcon"></i> Analyze Symptoms
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- System Features Section -->
+<section class="py-5 bg-light">
+    <div class="container py-lg-4">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill fw-semibold mb-2">
+                <i class="bi bi-gear-wide-connected me-1"></i> Architecture
+            </span>
+            <h2 class="fw-bold text-navy">How SmartHealth Assistant Works</h2>
+            <p class="text-muted">
+                Engineered with academic rigor using transparent rule-based heuristics and secure Django architecture.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center feature-card">
+                    <div class="feature-icon-wrapper bg-primary-subtle text-primary mx-auto mb-3 rounded-circle">
+                        <i class="bi bi-diagram-3-fill fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Rule-Based Engine</h5>
+                    <p class="text-muted small mb-0">
+                        Inference algorithms match input symptoms against verified condition profiles with high transparency.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center feature-card">
+                    <div class="feature-icon-wrapper bg-danger-subtle text-danger mx-auto mb-3 rounded-circle">
+                        <i class="bi bi-shield-exclamation fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Emergency Filter</h5>
+                    <p class="text-muted small mb-0">
+                        Critical red-flag symptoms bypass routine scoring and trigger high-priority medical care warnings.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center feature-card">
+                    <div class="feature-icon-wrapper bg-success-subtle text-success mx-auto mb-3 rounded-circle">
+                        <i class="bi bi-percent fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Match Scoring</h5>
+                    <p class="text-muted small mb-0">
+                        Computes precise symptom match percentages, distinctly separated from disease probabilities.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center feature-card">
+                    <div class="feature-icon-wrapper bg-info-subtle text-info mx-auto mb-3 rounded-circle">
+                        <i class="bi bi-database-check fs-3"></i>
+                    </div>
+                    <h5 class="fw-bold">SQLite History</h5>
+                    <p class="text-muted small mb-0">
+                        Previous health evaluations are securely persisted and accessible via Django ORM and Admin.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact-section" class="py-5 bg-white border-top">
+    <div class="container py-lg-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
+                        <i class="bi bi-chat-left-dots me-1"></i> Get In Touch
+                    </span>
+                    <h2 class="fw-bold text-navy">Contact &amp; Feedback</h2>
+                    <p class="text-muted">
+                        Have questions about this MCA project or feedback on the symptom knowledge base? Send us a message below.
+                    </p>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-light-card">
+                    <form method="POST" action="{% url 'assistant:index' %}#contact-section" novalidate>
+                        {% csrf_token %}
+                        <input type="hidden" name="contact_submit" value="1">
+                        
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control form-control-lg" id="id_name" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control form-control-lg" id="id_email" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="id_message" class="form-label fw-semibold">Your Message <span class="text-danger">*</span></label>
+                            <textarea name="message" class="form-control form-control-lg" id="id_message" rows="4" placeholder="Type your message or project inquiry here..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom btn-lg w-100 rounded-pill fw-semibold shadow-sm">
+                            <i class="bi bi-send me-1"></i> Submit Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

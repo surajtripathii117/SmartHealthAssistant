@@ -1,0 +1,167 @@
+{% extends 'assistant/base.html' %}
+{% load static %}
+
+{% block title %}About - SmartHealth Assistant{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="text-center max-w-800 mx-auto mb-5">
+        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold mb-2">
+            <i class="bi bi-mortarboard-fill me-1"></i> MCA Academic Project
+        </span>
+        <h1 class="fw-extrabold text-navy display-5 mb-3">About SmartHealth Assistant</h1>
+        <p class="lead text-muted">
+            An intelligent, web-based health information platform engineered to deliver preliminary symptom analysis, health condition insights, and actionable precautions using transparent rule-based heuristics.
+        </p>
+    </div>
+
+    <!-- Project Purpose & Overview -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 h-100 bg-white">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="avatar-icon bg-primary-subtle text-primary p-3 rounded-circle me-3">
+                        <i class="bi bi-bullseye fs-3"></i>
+                    </span>
+                    <h4 class="fw-bold mb-0 text-navy">Project Objective</h4>
+                </div>
+                <p class="text-secondary leading-relaxed">
+                    <strong>SmartHealth Assistant</strong> is an <strong>MCA (Master of Computer Applications)</strong> academic project designed to demonstrate how a modern web-based health information system can process user-provided symptoms and provide preliminary informational guidance.
+                </p>
+                <p class="text-secondary leading-relaxed mb-0">
+                    The platform bridges the gap between raw medical symptom lists and structured health education by computing normalized <strong>Symptom Match Scores</strong>, filtering emergency medical conditions, and advising timely consultation with qualified doctors.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 h-100 bg-white">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="avatar-icon bg-warning-subtle text-warning p-3 rounded-circle me-3">
+                        <i class="bi bi-shield-lock-fill fs-3"></i>
+                    </span>
+                    <h4 class="fw-bold mb-0 text-navy">Clinical Safety Protocol</h4>
+                </div>
+                <p class="text-secondary leading-relaxed">
+                    A core design principle of SmartHealth Assistant is adherence to strict healthcare safety boundaries:
+                </p>
+                <ul class="text-secondary ps-3 mb-0 small leading-relaxed">
+                    <li class="mb-2"><strong>Zero False Diagnosis:</strong> Scores represent symptom overlap matching, never a statistical disease likelihood or formal diagnosis.</li>
+                    <li class="mb-2"><strong>Dedicated Emergency Triage:</strong> Symptoms such as severe chest pain, loss of consciousness, or breathing distress immediately bypass standard condition matching to trigger urgent care alerts.</li>
+                    <li class="mb-2"><strong>Transparent Rule-Based Inference:</strong> Deterministic logic ensures predictable, explainable matching behavior suitable for academic examination.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Stack Section -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-5 bg-white">
+        <div class="text-center mb-4">
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill fw-semibold mb-2">
+                <i class="bi bi-stack me-1"></i> Technical Architecture
+            </span>
+            <h3 class="fw-bold text-navy">Technology Stack</h3>
+            <p class="text-muted small">Constructed using industry-standard open-source technologies.</p>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-filetype-py text-primary fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">Python 3</h6>
+                    <small class="text-muted">Backend programming language &amp; symptom matching logic</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-boxes text-success fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">Django</h6>
+                    <small class="text-muted">High-level Python web framework, MTV architecture, and ORM</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-database text-info fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">SQLite</h6>
+                    <small class="text-muted">Lightweight, zero-configuration relational database engine</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-bootstrap-fill text-purple fs-1 mb-2 d-block" style="color: #6f42c1;"></i>
+                    <h6 class="fw-bold mb-1">Bootstrap 5</h6>
+                    <small class="text-muted">Responsive grid, UI utility classes, and accessible components</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-filetype-html text-danger fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">HTML5</h6>
+                    <small class="text-muted">Semantic markup and accessible page structuring</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-filetype-css text-primary fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">CSS3</h6>
+                    <small class="text-muted">Modern styling, card elevations, soft healthcare palette</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-filetype-js text-warning fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">JavaScript</h6>
+                    <small class="text-muted">Interactive symptom selection, counter, and UI responsiveness</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 bg-light border h-100">
+                    <i class="bi bi-cpu-fill text-dark fs-1 mb-2 d-block"></i>
+                    <h6 class="fw-bold mb-1">Rule-Based Engine</h6>
+                    <small class="text-muted">Domain-specific symptom-to-condition heuristics &amp; scoring</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rule-Based Matching Explanation -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 mb-5 bg-white">
+        <h4 class="fw-bold text-navy mb-3">
+            <i class="bi bi-calculator text-primary me-2"></i> How the Symptom Matching Algorithm Works
+        </h4>
+        <p class="text-secondary leading-relaxed">
+            The inference engine executes deterministic set evaluation across the symptoms database:
+        </p>
+        <div class="bg-light p-4 rounded-3 border mb-3">
+            <h6 class="fw-bold text-dark mb-2">Symptom Match Score Formula:</h6>
+            <div class="p-3 bg-white border rounded font-monospace small mb-2 text-dark">
+                Match Score (%) = (Number of Matched Condition Symptoms / Total Symptoms in Condition Profile) &times; 100
+            </div>
+            <p class="small text-muted mb-0">
+                Example: If a user selects 4 symptoms, and 3 match the 5 defining symptoms of "Flu-like Illness", the Match Score is (3 / 5) &times; 100 = 60.0%.
+            </p>
+        </div>
+        <p class="text-secondary small mb-0">
+            Conditions are ranked in descending order of their Match Scores. Only conditions with at least one matching symptom are displayed to the user.
+        </p>
+    </div>
+
+    <!-- Prominent Medical Disclaimer Box -->
+    <div class="card border-0 rounded-4 p-4 shadow-sm disclaimer-card">
+        <div class="d-flex align-items-start">
+            <div class="disclaimer-icon text-warning me-3 fs-3 flex-shrink-0">
+                <i class="bi bi-shield-exclamation"></i>
+            </div>
+            <div>
+                <h5 class="fw-bold text-dark mb-2">Mandatory Academic &amp; Clinical Disclaimer</h5>
+                <p class="mb-0 text-secondary leading-relaxed small">
+                    SmartHealth Assistant is an educational project developed for academic presentation in Master of Computer Applications (MCA). 
+                    It is NOT a certified medical device and does NOT offer medical diagnosis, prognosis, or prescriptive treatment. 
+                    Users experiencing medical distress or seeking health diagnosis should always consult a licensed doctor or emergency healthcare provider.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

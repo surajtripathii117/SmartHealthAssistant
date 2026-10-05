@@ -1,0 +1,46 @@
+{
+  "critical_symptoms": [
+    {
+      "symptom": "Severe chest pain",
+      "severity": "CRITICAL",
+      "potential_risks": ["Myocardial infarction", "Aortic dissection", "Acute coronary syndrome"],
+      "action": "Immediate emergency room / ambulance"
+    },
+    {
+      "symptom": "Difficulty breathing",
+      "severity": "CRITICAL",
+      "potential_risks": ["Respiratory failure", "Severe asthma", "Pulmonary embolism", "Anaphylaxis"],
+      "action": "Immediate supplemental oxygen and emergency care"
+    },
+    {
+      "symptom": "Severe bleeding",
+      "severity": "CRITICAL",
+      "potential_risks": ["Hypovolemic shock", "Arterial hemorrhage"],
+      "action": "Direct pressure, tourniquet if trained, immediate trauma team"
+    },
+    {
+      "symptom": "Loss of consciousness",
+      "severity": "CRITICAL",
+      "potential_risks": ["Syncope", "Traumatic brain injury", "Cardiac arrhythmia", "Severe hypoglycemia"],
+      "action": "Recovery position, call emergency services immediately"
+    },
+    {
+      "symptom": "Stroke-like symptoms",
+      "severity": "CRITICAL",
+      "potential_risks": ["Ischemic stroke", "Hemorrhagic stroke", "Transient Ischemic Attack"],
+      "action": "FAST evaluation (Face, Arms, Speech, Time), immediate emergency transport"
+    },
+    {
+      "symptom": "Severe allergic reaction",
+      "severity": "CRITICAL",
+      "potential_risks": ["Anaphylactic shock", "Airway closure"],
+      "action": "Administer epinephrine autoinjector if available, call emergency"
+    }
+  ],
+  "emergency_numbers": {
+    "India": "112 / 108",
+    "United States": "911",
+    "United Kingdom": "999",
+    "European Union": "112"
+  }
+}
